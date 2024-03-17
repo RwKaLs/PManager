@@ -17,9 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.PasswordManager"
-            tools:ignore="LockedOrientationActivity">
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.PasswordManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

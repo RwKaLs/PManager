@@ -74,6 +74,7 @@ dependencies {
 
     //implementation("androidx.security:security-crypto-ktx:1.0.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.biometric:biometric:1.1.0")
 
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")

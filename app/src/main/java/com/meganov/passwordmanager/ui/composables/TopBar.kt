@@ -11,6 +11,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
+/**
+ * TopBar for all screens
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(

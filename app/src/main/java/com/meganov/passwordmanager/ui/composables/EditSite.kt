@@ -28,9 +28,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -48,6 +48,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.meganov.passwordmanager.data.Site
 
+/**
+ * Edit each field of the site after clicking edit button on the top
+ * Reload the image in case of changes
+ * Remove site by clicking trash button
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EditSite(
@@ -56,14 +61,17 @@ fun EditSite(
     saveSite: (Site, String, String, String) -> Unit,
     removeSite: (Site) -> Unit,
     loadIcon: (String) -> Unit,
+    loadIconFromDB: (Site) -> Unit,
+    decrypt: (String) -> String,
     navController: NavController
 ) {
     var siteName by rememberSaveable { mutableStateOf(site.name) }
     var login by rememberSaveable { mutableStateOf(site.login) }
-    var password by rememberSaveable { mutableStateOf(site.password) }
+    var password by rememberSaveable { mutableStateOf(decrypt(site.password)) }
     var passwordVisibility by rememberSaveable { mutableStateOf(false) }
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var readOnly by rememberSaveable { mutableStateOf(true) }
+    loadIconFromDB(site)
     val clipboardManager =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     Scaffold(
@@ -83,7 +91,10 @@ fun EditSite(
                             }
                         }
                     ) {
-                        Icon(if (readOnly) Icons.Default.Edit else Icons.Default.Check, "Edit fields")
+                        Icon(
+                            if (readOnly) Icons.Default.Edit else Icons.Default.Check,
+                            "Edit fields"
+                        )
                     }
                     IconButton(onClick = {
                         showDialog = true
@@ -98,7 +109,7 @@ fun EditSite(
             Spacer(modifier = Modifier.padding(top = 56.dp, bottom = 70.dp))
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     siteIcon.value?.asImageBitmap()?.let { it1 ->
@@ -109,7 +120,7 @@ fun EditSite(
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    TextField(
+                    OutlinedTextField(
                         value = siteName,
                         readOnly = readOnly,
                         singleLine = true,
@@ -135,7 +146,7 @@ fun EditSite(
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    TextField(
+                    OutlinedTextField(
                         value = login,
                         readOnly = readOnly,
                         singleLine = true,
@@ -155,7 +166,7 @@ fun EditSite(
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(15.dp))
-                    TextField(
+                    OutlinedTextField(
                         value = password,
                         readOnly = readOnly,
                         singleLine = true,
